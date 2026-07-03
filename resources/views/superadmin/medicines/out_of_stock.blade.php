@@ -130,8 +130,8 @@
                         </td>
                         <td class="px-4 py-4">
                             <div class="text-sm text-slate-700 font-medium">{{ $med->supplier->name ?? '-' }}</div>
-                            @if($med->supplier && $med->supplier->phone)
-                                <div class="text-xs text-slate-500 mt-0.5">{{ $med->supplier->phone }}</div>
+                            @if($med->supplier && $med->supplier->contact_number)
+                                <div class="text-xs text-slate-500 mt-0.5">{{ $med->supplier->contact_number }}</div>
                             @endif
                         </td>
                         <td class="px-4 py-4 text-right">

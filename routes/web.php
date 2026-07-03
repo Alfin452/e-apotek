@@ -26,6 +26,9 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     // Category & Unit routes (Only index, store, update, destroy needed for single-page CRUD)
     Route::resource('categories', \App\Http\Controllers\CategoryController::class)->except(['create', 'show', 'edit']);
     Route::resource('units', \App\Http\Controllers\UnitController::class)->except(['create', 'show', 'edit']);
+    
+    // Supplier route
+    Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)->except(['create', 'show', 'edit']);
 });
 
 require __DIR__.'/auth.php';
