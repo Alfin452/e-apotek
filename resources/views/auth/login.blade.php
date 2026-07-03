@@ -19,9 +19,9 @@
     <div class="min-h-screen grid lg:grid-cols-2">
         
         <!-- Left Content Section (Animated Characters) -->
-        <div class="relative hidden lg:flex flex-col justify-between bg-white p-12 text-slate-900 overflow-hidden">
+        <div class="relative hidden lg:flex flex-col justify-between bg-[#122837] p-12 text-white overflow-hidden">
             <div class="relative z-20">
-                <div class="flex items-center gap-2 text-lg font-semibold text-[#128837]">
+                <div class="flex items-center gap-2 text-xl font-bold text-[#FBFC09]">
                     <span>E-Apotek</span>
                 </div>
             </div>
@@ -108,30 +108,30 @@
                 </div>
             </div>
 
-            <div class="relative z-20 flex items-center gap-8 text-sm text-slate-400">
-                <button type="button" id="btn-privacy" class="hover:text-slate-900 transition-colors">Kebijakan Privasi</button>
-                <button type="button" id="btn-terms" class="hover:text-slate-900 transition-colors">Syarat Ketentuan</button>
-                <button type="button" id="btn-contact" class="hover:text-slate-900 transition-colors">Kontak</button>
+            <div class="relative z-20 flex items-center gap-8 text-sm text-slate-300">
+                <button type="button" id="btn-privacy" class="hover:text-white transition-colors">Kebijakan Privasi</button>
+                <button type="button" id="btn-terms" class="hover:text-white transition-colors">Syarat Ketentuan</button>
+                <button type="button" id="btn-contact" class="hover:text-white transition-colors">Kontak</button>
             </div>
 
             <!-- Decorative elements -->
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIgZmlsbD0icmdiYSgwLCAwLCAwLCAwLjAzKSI+PC9jaXJjbGU+Cjwvc3ZnPg==')] z-0"></div>
-            <div class="absolute top-1/4 right-1/4 w-64 h-64 bg-slate-100 rounded-full blur-3xl z-0 pointer-events-none"></div>
-            <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-slate-50 rounded-full blur-3xl z-0 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAzKSI+PC9jaXJjbGU+Cjwvc3ZnPg==')] z-0"></div>
+            <div class="absolute top-1/4 right-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl z-0 pointer-events-none"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl z-0 pointer-events-none"></div>
         </div>
 
         <!-- Right Login Section -->
-        <div class="flex items-center justify-center p-8 bg-slate-950 relative z-10 text-white border-l border-slate-900">
+        <div class="flex items-center justify-center p-8 bg-white relative z-10 text-slate-900 border-l border-slate-100 shadow-[-10px_0_30px_-15px_rgba(0,0,0,0.1)]">
             <div class="w-full max-w-[420px]">
                 
                 <!-- Mobile Logo -->
-                <div class="lg:hidden flex items-center justify-center gap-2 text-lg font-semibold mb-12 text-[#128837]">
+                <div class="lg:hidden flex items-center justify-center gap-2 text-xl font-bold mb-12 text-[#122837]">
                     <span>E-Apotek</span>
                 </div>
 
                 <div class="text-center mb-10">
-                    <h1 class="text-3xl font-bold tracking-tight mb-2 text-white">Selamat datang kembali!</h1>
-                    <p class="text-slate-400 text-sm">Silakan masukkan detail akun Anda</p>
+                    <h1 class="text-3xl font-extrabold tracking-tight mb-2 text-slate-900">Selamat datang kembali!</h1>
+                    <p class="text-slate-500 text-sm font-medium">Silakan masukkan detail akun Anda</p>
                 </div>
 
                 <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -140,37 +140,37 @@
                     @csrf
                     
                     <div class="space-y-2">
-                        <label for="email" class="text-sm font-medium text-slate-200">Email</label>
+                        <label for="email" class="text-sm font-bold text-slate-700">Email</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="anda@apotek.com"
-                            class="flex h-12 w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-white ring-offset-slate-950 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#128837] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
+                            class="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-900 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#122837] focus-visible:ring-offset-2 transition-colors"
                         >
-                        <x-input-error :messages="$errors->get('email')" class="mt-2 text-sm text-red-400" />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2 text-sm text-red-500" />
                     </div>
 
                     <div class="space-y-2">
-                        <label for="password" class="text-sm font-medium text-slate-200">Kata Sandi</label>
+                        <label for="password" class="text-sm font-bold text-slate-700">Kata Sandi</label>
                         <div class="relative">
                             <input id="password" type="password" name="password" required autocomplete="current-password" placeholder="••••••••"
-                                class="flex h-12 w-full rounded-md border border-slate-800 bg-slate-900 px-3 py-2 pr-10 text-sm text-white ring-offset-slate-950 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#128837] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
+                                class="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 pr-10 text-sm font-medium text-slate-900 ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#122837] focus-visible:ring-offset-2 transition-colors"
                             >
-                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
+                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                                 <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                             </button>
                         </div>
-                        <x-input-error :messages="$errors->get('password')" class="mt-2 text-sm text-red-400" />
+                        <x-input-error :messages="$errors->get('password')" class="mt-2 text-sm text-red-500" />
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between mt-2">
                         <div class="flex items-center space-x-2">
-                            <input id="remember_me" type="checkbox" name="remember" class="peer h-4 w-4 shrink-0 rounded-sm border border-slate-700 bg-slate-900 text-[#128837] focus:ring-[#128837] ring-offset-slate-950">
-                            <label for="remember_me" class="text-sm font-normal cursor-pointer text-slate-400">Ingat saya selama 30 hari</label>
+                            <input id="remember_me" type="checkbox" name="remember" class="peer h-4 w-4 shrink-0 rounded border border-slate-300 bg-white text-[#122837] focus:ring-[#122837] ring-offset-white">
+                            <label for="remember_me" class="text-sm font-medium cursor-pointer text-slate-600">Ingat saya</label>
                         </div>
                         @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-sm text-[#128837] hover:text-[#128837]/80 hover:underline font-medium transition-colors">Lupa kata sandi?</a>
+                            <a href="{{ route('password.request') }}" class="text-sm text-[#122837] hover:text-[#122837]/80 font-bold transition-colors">Lupa kata sandi?</a>
                         @endif
                     </div>
 
-                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-base font-bold ring-offset-slate-950 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#128837] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#128837] text-white hover:bg-[#128837]/90 h-12 px-8 w-full shadow-lg shadow-[#128837]/20 mt-2">
+                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-xl text-base font-bold ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#122837] focus-visible:ring-offset-2 bg-[#122837] text-white hover:bg-[#1a384f] h-12 px-8 w-full shadow-lg shadow-[#122837]/20 mt-6">
                         Masuk
                     </button>
                 </form>

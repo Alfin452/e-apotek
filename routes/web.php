@@ -19,6 +19,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Superadmin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('medicines/expired', [\App\Http\Controllers\MedicineController::class, 'expired'])->name('medicines.expired');
+    Route::get('medicines/out-of-stock', [\App\Http\Controllers\MedicineController::class, 'outOfStock'])->name('medicines.out_of_stock');
     Route::resource('medicines', \App\Http\Controllers\MedicineController::class);
 });
 

@@ -125,10 +125,27 @@
                     <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Manajemen</p>
                 </div>
 
-                <a href="{{ route('superadmin.medicines.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.medicines.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.medicines.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                    <span class="text-sm tracking-wide">Obat</span>
-                </a>
+                <div x-data="{ open: {{ request()->routeIs('superadmin.medicines.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.medicines.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.medicines.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                            <span class="text-sm tracking-wide">Obat</span>
+                        </div>
+                        <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    
+                    <div x-show="open" x-transition.opacity.duration.200ms class="mt-1 space-y-1 pl-11">
+                        <a href="{{ route('superadmin.medicines.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.medicines.index') || request()->routeIs('superadmin.medicines.create') || request()->routeIs('superadmin.medicines.edit') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Data Obat
+                        </a>
+                        <a href="{{ route('superadmin.medicines.expired') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.medicines.expired') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Kadaluarsa Obat
+                        </a>
+                        <a href="{{ route('superadmin.medicines.out_of_stock') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.medicines.out_of_stock') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Obat Habis
+                        </a>
+                    </div>
+                </div>
                 <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
                     <span class="text-sm tracking-wide">Kategori & Unit</span>

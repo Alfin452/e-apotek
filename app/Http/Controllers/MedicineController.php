@@ -46,6 +46,58 @@ class MedicineController extends Controller
         return view('superadmin.medicines.index', compact('medicines', 'search', 'category_id', 'type_id', 'supplier_id', 'categories', 'types', 'suppliers'));
     }
 
+    public function expired(Request $request)
+    {
+        $search = $request->input('search');
+        $now = now();
+        $sixMonths = now()->addMonths(6);
+        $threeMonths = now()->addMonths(3);
+
+        $query = Medicine::with(['unit', 'category', 'supplier'])
+                         ->where('expired_date', '<=', $sixMonths)
+                         ->orderBy('expired_date', 'asc');
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $medicines = $query->paginate(10)->withQueryString();
+
+        $countAlreadyExpired = Medicine::where('expired_date', '<', $now)->count();
+        $countCritical = Medicine::where('expired_date', '>=', $now)
+                                 ->where('expired_date', '<=', $threeMonths)->count();
+        $potentialLoss = Medicine::where('expired_date', '<', $now)
+                                 ->selectRaw('SUM(purchase_price * stock) as total_loss')
+                                 ->value('total_loss') ?? 0;
+
+        return view('superadmin.medicines.expired', compact('medicines', 'search', 'countAlreadyExpired', 'countCritical', 'potentialLoss'));
+    }
+
+    public function outOfStock(Request $request)
+    {
+        $search = $request->input('search');
+
+        $query = Medicine::with(['unit', 'category', 'supplier'])
+                         ->whereColumn('stock', '<=', 'min_stock')
+                         ->orderBy('stock', 'asc');
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $medicines = $query->paginate(10)->withQueryString();
+
+        $countEmpty = Medicine::where('stock', '<=', 0)->count();
+        $countLow = Medicine::where('stock', '>', 0)
+                            ->whereColumn('stock', '<=', 'min_stock')->count();
+        
+        $restockValue = Medicine::whereColumn('stock', '<=', 'min_stock')
+                                ->selectRaw('SUM(purchase_price * (min_stock - stock)) as total_value')
+                                ->value('total_value') ?? 0;
+
+        return view('superadmin.medicines.out_of_stock', compact('medicines', 'search', 'countEmpty', 'countLow', 'restockValue'));
+    }
+
     public function create()
     {
         $categories = Category::all();
@@ -115,6 +167,6 @@ class MedicineController extends Controller
     public function destroy(Medicine $medicine)
     {
         $medicine->delete();
-        return redirect()->route('superadmin.medicines.index')->with('success', 'Data obat berhasil dihapus!');
+        return redirect()->back()->with('success', 'Data obat berhasil dihapus/dimusnahkan!');
     }
 }
