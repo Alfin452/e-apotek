@@ -146,10 +146,24 @@
                         </a>
                     </div>
                 </div>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                    <span class="text-sm tracking-wide">Kategori & Unit</span>
-                </a>
+                <div x-data="{ open: {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                            <span class="text-sm tracking-wide">Kategori & Unit</span>
+                        </div>
+                        <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    
+                    <div x-show="open" x-transition.opacity.duration.200ms class="mt-1 space-y-1 pl-11">
+                        <a href="{{ route('superadmin.categories.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.categories.*') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Kategori Obat
+                        </a>
+                        <a href="{{ route('superadmin.units.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.units.*') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Unit Obat
+                        </a>
+                    </div>
+                </div>
                 <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
                     <span class="text-sm tracking-wide">Pemasok</span>
@@ -293,6 +307,24 @@
                 title: "{{ session('success') }}",
                 showConfirmButton: false,
                 timer: 3000,
+                timerProgressBar: true,
+                background: '#ffffff',
+                customClass: {
+                    popup: 'slim-toast mt-4'
+                }
+            });
+        });
+        @endif
+
+        @if(session('error'))
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'error',
+                title: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 4000,
                 timerProgressBar: true,
                 background: '#ffffff',
                 customClass: {

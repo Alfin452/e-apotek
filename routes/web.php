@@ -22,6 +22,10 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     Route::get('medicines/expired', [\App\Http\Controllers\MedicineController::class, 'expired'])->name('medicines.expired');
     Route::get('medicines/out-of-stock', [\App\Http\Controllers\MedicineController::class, 'outOfStock'])->name('medicines.out_of_stock');
     Route::resource('medicines', \App\Http\Controllers\MedicineController::class);
+    
+    // Category & Unit routes (Only index, store, update, destroy needed for single-page CRUD)
+    Route::resource('categories', \App\Http\Controllers\CategoryController::class)->except(['create', 'show', 'edit']);
+    Route::resource('units', \App\Http\Controllers\UnitController::class)->except(['create', 'show', 'edit']);
 });
 
 require __DIR__.'/auth.php';
