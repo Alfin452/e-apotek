@@ -121,6 +121,7 @@
                     <span class="text-sm tracking-wide">Beranda</span>
                 </a>
                 
+                @if(in_array(auth()->user()->role, ['superadmin', 'apoteker']))
                 <div class="pt-4 pb-2">
                     <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Manajemen</p>
                 </div>
@@ -168,32 +169,115 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.suppliers.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
                     <span class="text-sm tracking-wide">Pemasok</span>
                 </a>
+                @endif
 
                 <div class="pt-4 pb-2">
                     <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Transaksi</p>
                 </div>
 
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                    <span class="text-sm tracking-wide">Penjualan</span>
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                    <span class="text-sm tracking-wide">Pembelian</span>
-                </a>
+                <!-- Sales -->
+                @if(in_array(auth()->user()->role, ['superadmin', 'kasir']))
+                <div x-data="{ open: {{ request()->routeIs('superadmin.sales.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.sales.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.sales.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                            <span class="text-sm tracking-wide">Penjualan</span>
+                        </div>
+                        <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    
+                    <div x-show="open" x-transition.opacity.duration.200ms class="mt-1 space-y-1 pl-11">
+                        <a href="{{ route('superadmin.sales.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.sales.index') || request()->routeIs('superadmin.sales.create') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Data Penjualan
+                        </a>
+                        <a href="{{ route('superadmin.sales.chart') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.sales.chart') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Grafik Penjualan
+                        </a>
+                    </div>
+                </div>
+                @endif
+                <!-- Pembelian -->
+                @if(in_array(auth()->user()->role, ['superadmin', 'apoteker']))
+                <div x-data="{ open: {{ request()->routeIs('superadmin.purchases.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.purchases.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.purchases.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                            <span class="text-sm tracking-wide">Pembelian</span>
+                        </div>
+                        <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    
+                    <div x-show="open" x-transition.opacity.duration.200ms class="mt-1 space-y-1 pl-11">
+                        <a href="{{ route('superadmin.purchases.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.purchases.index') || request()->routeIs('superadmin.purchases.create') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Data Pembelian
+                        </a>
+                        <a href="{{ route('superadmin.purchases.chart') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.purchases.chart') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Grafik Pembelian
+                        </a>
+                    </div>
+                </div>
+                @endif
 
                 <div class="pt-4 pb-2">
                     <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Sistem</p>
                 </div>
 
+                @if(auth()->user()->role === 'superadmin')
                 <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                     <span class="text-sm tracking-wide">Manajemen User</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 font-medium hover:bg-white/5 hover:text-white transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    <span class="text-sm tracking-wide">Laporan</span>
-                </a>
+                @endif
+                @if(in_array(auth()->user()->role, ['superadmin', 'apoteker']))
+                <div x-data="{ open: {{ request()->routeIs('superadmin.reports.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.reports.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.reports.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            <span class="text-sm tracking-wide">Laporan</span>
+                        </div>
+                        <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    
+                    <div x-show="open" x-transition.opacity.duration.200ms class="mt-1 space-y-1 pl-11">
+                        @if(auth()->user()->role === 'superadmin')
+                        <a href="{{ route('superadmin.reports.profit') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.profit') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            1. Laba/Rugi Bersih
+                        </a>
+                        @endif
+                        <a href="{{ route('superadmin.reports.profitable_medicines') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.profitable_medicines') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            2. Obat Paling Untung
+                        </a>
+                        @if(auth()->user()->role === 'superadmin')
+                        <a href="{{ route('superadmin.reports.sales_trend') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.sales_trend') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            3. Tren Penjualan
+                        </a>
+                        <a href="{{ route('superadmin.reports.category_performance') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.category_performance') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            4. Kinerja Kategori
+                        </a>
+                        <a href="{{ route('superadmin.reports.cashier_performance') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.cashier_performance') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            5. Kinerja Pegawai
+                        </a>
+                        <a href="{{ route('superadmin.reports.supplier_spending') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.supplier_spending') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            6. Analisis Pemasok
+                        </a>
+                        @endif
+                        <a href="{{ route('superadmin.reports.expired_risk') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.expired_risk') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            7. Risiko Kadaluarsa
+                        </a>
+                        <a href="{{ route('superadmin.reports.stock_status') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.stock_status') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            8. Status Stok
+                        </a>
+                        @if(auth()->user()->role === 'superadmin')
+                        <a href="{{ route('superadmin.reports.cashflow') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.cashflow') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            9. Arus Kas
+                        </a>
+                        @endif
+                        <a href="{{ route('superadmin.reports.top_selling') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.reports.top_selling') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            10. Obat Terlaris
+                        </a>
+                    </div>
+                </div>
+                @endif
             </nav>
         </aside>
 
@@ -207,34 +291,56 @@
                 </div>
                 <div class="flex items-center gap-6">
                     
-                    <!-- Notification Bell -->
-                    <button class="relative p-2.5 text-slate-400 hover:text-brand-blue transition-colors rounded-full hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-blue/20">
-                        <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                    </button>
-
-                    <div class="h-8 w-px bg-slate-200"></div>
-
-                    <!-- User Menu -->
-                    <div class="flex items-center gap-4 cursor-pointer group">
-                        <div class="flex flex-col text-right">
-                            <span class="text-sm font-bold text-slate-900 group-hover:text-brand-blue transition-colors">{{ Auth::user()->name }}</span>
-                            <span class="text-xs font-semibold text-brand-blue/60 uppercase tracking-wider">{{ Auth::user()->role }}</span>
+                    <!-- User Dropdown Menu -->
+                    <div class="relative" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">
+                        <!-- Dropdown Trigger -->
+                        <div @click="open = !open" class="flex items-center gap-4 cursor-pointer group rounded-full p-1 hover:bg-slate-50 transition-colors">
+                            <div class="flex flex-col text-right">
+                                <span class="text-sm font-bold text-slate-900 group-hover:text-brand-blue transition-colors">{{ Auth::user()->name }}</span>
+                                <span class="text-xs font-semibold text-brand-blue/60 uppercase tracking-wider">{{ Auth::user()->role }}</span>
+                            </div>
+                            
+                            @if(Auth::user()->photo)
+                                <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="{{ Auth::user()->name }}" class="w-11 h-11 rounded-full object-cover shadow-md shadow-brand-blue/20 border-2 border-white ring-2 ring-transparent group-hover:ring-brand-blue transition-all">
+                            @else
+                                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-brand-blue to-brand-blue/80 flex items-center justify-center text-brand-yellow font-bold text-lg shadow-md shadow-brand-blue/20 border-2 border-white ring-2 ring-transparent group-hover:ring-brand-yellow transition-all">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                            @endif
                         </div>
-                        <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-brand-blue to-brand-blue/80 flex items-center justify-center text-brand-yellow font-bold text-lg shadow-md shadow-brand-blue/20 border-2 border-white ring-2 ring-transparent group-hover:ring-brand-yellow transition-all">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
-                        
-                        <form method="POST" action="{{ route('logout') }}" class="ml-2" id="logout-form">
-                            @csrf
-                            <button type="button" onclick="confirmLogout()" class="p-2 text-slate-300 hover:text-red-500 transition-colors rounded-full hover:bg-red-50 focus:outline-none" title="Log Out">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+
+                        <!-- Dropdown Menu -->
+                        <div x-show="open" 
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+                             class="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50"
+                             style="display: none;">
+                            
+                            <!-- Edit Profile -->
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
-                            </button>
-                        </form>
+                                Edit Profile
+                            </a>
+                            
+                            <hr class="my-1 border-slate-100">
+                            
+                            <!-- Logout -->
+                            <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                                @csrf
+                                <button type="button" onclick="confirmLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition-colors text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                    Log Out
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </header>

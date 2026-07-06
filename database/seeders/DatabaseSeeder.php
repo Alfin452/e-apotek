@@ -22,15 +22,22 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        $this->call([
-            MasterDataSeeder::class,
+        User::factory()->create([
+            'name' => 'Apoteker',
+            'email' => 'apoteker@gmail.com',
+            'role' => 'apoteker',
+            'password' => bcrypt('password'),
         ]);
 
         User::factory()->create([
-            'name' => 'Pegawai User',
-            'email' => 'pegawai@apotek.com',
-            'role' => 'pegawai',
+            'name' => 'Kasir',
+            'email' => 'kasir@gmail.com',
+            'role' => 'kasir',
             'password' => bcrypt('password'),
+        ]);
+
+        $this->call([
+            MasterDataSeeder::class,
         ]);
 
         User::factory()->create([

@@ -14,23 +14,21 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (!Auth::check()) {
             return redirect('/login');
         }
 
-        if (Auth::user()->role !== $role) {
+        $userRole = Auth::user()->role;
+
+        if (!in_array($userRole, $roles)) {
             // Redirect based on their actual role if they try to access unauthorized pages
-            $userRole = Auth::user()->role;
-            if ($userRole === 'superadmin') {
+            if (in_array($userRole, ['superadmin', 'apoteker', 'kasir'])) {
                 return redirect()->route('superadmin.dashboard');
-            } elseif ($userRole === 'pegawai') {
-                return redirect('/dashboard'); // placeholder
-            } elseif ($userRole === 'pasien') {
-                return redirect('/dashboard'); // placeholder
+            } else {
+                return redirect('/dashboard');
             }
-            return redirect('/');
         }
 
         return $next($request);
