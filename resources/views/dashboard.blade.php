@@ -1,3 +1,10 @@
+@php
+    $role = auth()->user()->role ?? 'pasien';
+    if (in_array($role, ['superadmin', 'apoteker', 'kasir'])) {
+        header("Location: " . route('superadmin.dashboard'));
+        exit;
+    }
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

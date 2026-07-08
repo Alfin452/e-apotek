@@ -147,11 +147,11 @@
                         </a>
                     </div>
                 </div>
-                <div x-data="{ open: {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') ? 'true' : 'false' }} }">
-                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
+                <div x-data="{ open: {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') || request()->routeIs('superadmin.storages.*') ? 'true' : 'false' }} }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') || request()->routeIs('superadmin.storages.*') ? 'bg-white/10 text-brand-yellow font-semibold shadow-inner border border-white/5' : 'text-slate-400 font-medium hover:bg-white/5 hover:text-white' }} transition-all">
                         <div class="flex items-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                            <span class="text-sm tracking-wide">Kategori & Unit</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ request()->routeIs('superadmin.categories.*') || request()->routeIs('superadmin.units.*') || request()->routeIs('superadmin.storages.*') ? '' : 'opacity-80' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                            <span class="text-sm tracking-wide">Kategori & Master</span>
                         </div>
                         <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                     </button>
@@ -162,6 +162,9 @@
                         </a>
                         <a href="{{ route('superadmin.units.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.units.*') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
                             Unit Obat
+                        </a>
+                        <a href="{{ route('superadmin.storages.index') }}" class="block px-3 py-2 rounded-lg text-sm {{ request()->routeIs('superadmin.storages.*') ? 'text-brand-yellow font-medium' : 'text-slate-400 hover:text-white hover:bg-white/5' }} transition-colors">
+                            Penyimpanan
                         </a>
                     </div>
                 </div>

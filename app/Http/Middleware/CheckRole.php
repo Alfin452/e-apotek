@@ -20,9 +20,15 @@ class CheckRole
             return redirect('/login');
         }
 
+        // Sometimes Laravel passes comma-separated roles as a single array element if defined a certain way
+        $parsedRoles = [];
+        foreach ($roles as $roleGroup) {
+            $parsedRoles = array_merge($parsedRoles, explode(',', $roleGroup));
+        }
+
         $userRole = Auth::user()->role;
 
-        if (!in_array($userRole, $roles)) {
+        if (!in_array($userRole, $parsedRoles)) {
             // Redirect based on their actual role if they try to access unauthorized pages
             if (in_array($userRole, ['superadmin', 'apoteker', 'kasir'])) {
                 return redirect()->route('superadmin.dashboard');

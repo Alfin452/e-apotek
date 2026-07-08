@@ -31,6 +31,7 @@ Route::middleware(['auth', 'role:superadmin,apoteker,kasir'])->prefix('superadmi
         
         Route::resource('categories', \App\Http\Controllers\CategoryController::class)->except(['create', 'show', 'edit']);
         Route::resource('units', \App\Http\Controllers\UnitController::class)->except(['create', 'show', 'edit']);
+        Route::resource('storages', \App\Http\Controllers\StorageController::class)->except(['create', 'show', 'edit']);
         Route::resource('suppliers', \App\Http\Controllers\SupplierController::class)->except(['create', 'show', 'edit']);
         
         Route::get('/purchases/chart', [\App\Http\Controllers\PurchaseController::class, 'chart'])->name('purchases.chart');
