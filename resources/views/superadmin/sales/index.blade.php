@@ -141,9 +141,17 @@
                         </div>
                         
                         <!-- Invoice Total -->
-                        <div class="flex justify-between items-center text-sm font-black text-slate-900 mb-6">
+                        <div class="flex justify-between items-center text-sm font-black text-slate-900 mb-1">
                             <span>TOTAL BELANJA</span>
                             <span>Rp <span x-text="new Intl.NumberFormat('id-ID').format(invoice?.grand_total || 0)"></span></span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-1">
+                            <span>TUNAI</span>
+                            <span>Rp <span x-text="new Intl.NumberFormat('id-ID').format(invoice?.cash_given || 0)"></span></span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-6 border-t border-slate-200 pt-1">
+                            <span>KEMBALI</span>
+                            <span>Rp <span x-text="new Intl.NumberFormat('id-ID').format(invoice?.change || 0)"></span></span>
                         </div>
                         
                         <!-- Footer -->

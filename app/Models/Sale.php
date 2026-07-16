@@ -10,6 +10,8 @@ class Sale extends Model
         'customer_name',
         'sale_date',
         'grand_total',
+        'cash_given',
+        'change',
         'user_id'
     ];
 

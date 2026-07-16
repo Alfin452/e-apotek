@@ -186,14 +186,33 @@
                         </div>
                     </div>
 
-                    <div class="bg-black/20 rounded-xl p-4 mb-6 border border-white/5">
+                    <div class="bg-black/20 rounded-xl p-4 mb-4 border border-white/5">
                         <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Grand Total</div>
                         <div class="text-3xl font-black text-brand-yellow tracking-tight">
                             Rp <span x-text="formatRupiah(grandTotal)"></span>
                         </div>
                     </div>
 
-                    <button type="submit" form="salesForm" class="w-full bg-brand-yellow hover:bg-yellow-400 text-slate-900 font-black py-3 px-4 rounded-xl transition-all shadow-[0_0_20px_rgba(251,252,9,0.3)] text-base flex items-center justify-center gap-2 group" :disabled="grandTotal === 0 || hasErrors()">
+                    <!-- Kalkulator Uang Pelanggan -->
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Uang Tunai (Dibayar)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">Rp</span>
+                                <input type="text" x-model="formattedCash" @input="updateCash()" placeholder="0" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-600 bg-slate-800 focus:bg-slate-700 focus:ring-2 focus:ring-brand-yellow/50 focus:border-brand-yellow transition-all text-white font-bold text-lg">
+                                <input type="hidden" form="salesForm" name="customer_cash" :value="customerCash">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-800/50 rounded-xl p-3 border border-slate-700/50 flex justify-between items-center" :class="customerCash > 0 && customerCash < grandTotal ? 'border-red-500/50 bg-red-500/10' : ''">
+                            <span class="text-xs font-bold uppercase tracking-wider" :class="customerCash > 0 && customerCash < grandTotal ? 'text-red-400' : 'text-slate-400'">Kembalian</span>
+                            <div class="text-xl font-black" :class="customerCash > 0 && customerCash < grandTotal ? 'text-red-400' : 'text-emerald-400'">
+                                Rp <span x-text="formatRupiah(customerChange)"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" form="salesForm" class="w-full bg-brand-yellow hover:bg-yellow-400 text-slate-900 font-black py-3 px-4 rounded-xl transition-all shadow-[0_0_20px_rgba(251,252,9,0.3)] text-base flex items-center justify-center gap-2 group" :disabled="grandTotal === 0 || hasErrors() || (customerCash > 0 && customerCash < grandTotal)">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         Simpan Transaksi
                     </button>
@@ -222,12 +241,27 @@
         function posApp() {
             return {
                 availableMedicines: @json($medicines), // Datang dari controller
+                customerCash: 0,
+                formattedCash: '',
                 items: [
                     { id: Date.now(), medicine_id: '', price: 0, quantity: 1, subtotal: 0, maxStock: 0, unitName: '' }
                 ],
                 
+                updateCash() {
+                    // Remove non-digits
+                    let rawValue = this.formattedCash.replace(/\D/g, '');
+                    this.customerCash = parseInt(rawValue) || 0;
+                    // Format back with dots
+                    this.formattedCash = rawValue ? parseInt(rawValue).toLocaleString('id-ID') : '';
+                },
+                
                 get grandTotal() {
                     return this.items.reduce((sum, item) => sum + (item.subtotal || 0), 0);
+                },
+
+                get customerChange() {
+                    if (this.customerCash === 0 || this.customerCash < this.grandTotal) return 0;
+                    return this.customerCash - this.grandTotal;
                 },
 
                 getMedicineLabel(id) {
