@@ -334,9 +334,9 @@
                             <hr class="my-1 border-slate-100">
                             
                             <!-- Logout -->
-                            <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                            <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="button" onclick="confirmLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition-colors text-left">
+                                <button type="button" onclick="confirmLogout(this)" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 transition-colors text-left">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
@@ -444,7 +444,7 @@
         @endif
 
         // Global Logout Confirmation
-        function confirmLogout() {
+        function confirmLogout(buttonElement) {
             Swal.fire({
                 title: 'Keluar dari Aplikasi?',
                 text: "Anda akan mengakhiri sesi ini.",
@@ -462,7 +462,7 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('logout-form').submit();
+                    buttonElement.closest('form').submit();
                 }
             })
         }
