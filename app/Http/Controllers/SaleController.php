@@ -109,8 +109,10 @@ class SaleController extends Controller
     {
         $request->validate([
             'customer_name' => 'required|string|max:255',
+            'customer_phone' => 'nullable|string|max:20',
             'sale_date' => 'required|date',
             'customer_cash' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
             'medicines' => 'required|array|min:1',
             'medicines.*.id' => 'required|exists:medicines,id',
             'medicines.*.quantity' => 'required|integer|min:1'
@@ -149,10 +151,12 @@ class SaleController extends Controller
             // 2. Buat Transaksi Induk
             $sale = Sale::create([
                 'customer_name' => $request->customer_name,
+                'customer_phone' => $request->customer_phone,
                 'sale_date' => $request->sale_date,
                 'grand_total' => $grandTotal,
                 'cash_given' => $request->customer_cash,
                 'change' => max(0, $request->customer_cash - $grandTotal),
+                'notes' => $request->notes,
                 'user_id' => Auth::id()
             ]);
 

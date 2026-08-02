@@ -8,10 +8,12 @@ class Sale extends Model
 {
     protected $fillable = [
         'customer_name',
+        'customer_phone',
         'sale_date',
         'grand_total',
         'cash_given',
         'change',
+        'notes',
         'user_id'
     ];
 

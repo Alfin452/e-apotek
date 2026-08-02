@@ -28,7 +28,7 @@
                         <th class="px-4 py-3 rounded-tl-xl">ID Transaksi</th>
                         <th class="px-4 py-3">Tanggal</th>
                         <th class="px-4 py-3">Nama Pembeli</th>
-                        <th class="px-4 py-3">Kasir</th>
+                        <th class="px-4 py-3">Catatan</th>
                         <th class="px-4 py-3 text-right">Grand Total</th>
                         <th class="px-4 py-3 text-center rounded-tr-xl">Aksi</th>
                     </tr>
@@ -38,8 +38,19 @@
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-4 py-3 font-bold text-slate-700">#TRX-{{ str_pad($sale->id, 5, '0', STR_PAD_LEFT) }}</td>
                         <td class="px-4 py-3 text-slate-500 font-medium">{{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('d F Y') }}</td>
-                        <td class="px-4 py-3 font-bold text-slate-800">{{ $sale->customer_name }}</td>
-                        <td class="px-4 py-3 text-slate-500">{{ $sale->user->name ?? '-' }}</td>
+                        <td class="px-4 py-3">
+                            <div class="font-bold text-slate-800">{{ $sale->customer_name }}</div>
+                            @if($sale->customer_phone)
+                                <div class="text-xs text-slate-500">{{ $sale->customer_phone }}</div>
+                            @endif
+                        </td>
+                        <td class="px-4 py-3">
+                            @if($sale->notes)
+                                <span class="text-xs text-slate-500 line-clamp-1 max-w-[150px]" title="{{ $sale->notes }}">{{ $sale->notes }}</span>
+                            @else
+                                <span class="text-xs text-slate-400 italic">-</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 text-right font-black text-brand-blue">Rp {{ number_format($sale->grand_total, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
@@ -112,6 +123,9 @@
                             <div class="text-right">
                                 <p>Tgl : <span x-text="new Date(invoice?.sale_date).toLocaleDateString('id-ID')"></span></p>
                                 <p>Plg : <span x-text="invoice?.customer_name"></span></p>
+                                <template x-if="invoice?.customer_phone">
+                                    <p>Telp: <span x-text="invoice.customer_phone"></span></p>
+                                </template>
                             </div>
                         </div>
                         
@@ -149,10 +163,20 @@
                             <span>TUNAI</span>
                             <span>Rp <span x-text="new Intl.NumberFormat('id-ID').format(invoice?.cash_given || 0)"></span></span>
                         </div>
-                        <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-6 border-t border-slate-200 pt-1">
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-4 border-t border-slate-200 pt-1">
                             <span>KEMBALI</span>
                             <span>Rp <span x-text="new Intl.NumberFormat('id-ID').format(invoice?.change || 0)"></span></span>
                         </div>
+
+                        <template x-if="invoice?.notes">
+                            <div class="text-[10px] text-slate-600 mb-6 bg-slate-50 p-2 border border-slate-100 rounded border-dashed">
+                                <span class="font-bold block mb-0.5">Catatan:</span>
+                                <span x-text="invoice.notes"></span>
+                            </div>
+                        </template>
+                        <template x-if="!invoice?.notes">
+                            <div class="mb-6"></div>
+                        </template>
                         
                         <!-- Footer -->
                         <div class="text-center text-[10px] text-slate-500 font-medium">
