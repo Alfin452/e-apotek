@@ -166,7 +166,14 @@ class MedicineController extends Controller
 
     public function destroy(Medicine $medicine)
     {
-        $medicine->delete();
-        return redirect()->back()->with('success', 'Data obat berhasil dihapus/dimusnahkan!');
+        try {
+            $medicine->delete();
+            return redirect()->back()->with('success', 'Data obat berhasil dihapus/dimusnahkan!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() === '23000') {
+                return redirect()->back()->with('error', 'Gagal menghapus: Obat ini masih terikat dengan data riwayat transaksi (Pembelian/Penjualan).');
+            }
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data obat.');
+        }
     }
 }

@@ -2,7 +2,7 @@
     <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Laporan Laba/Rugi Bersih</h1>
-            <p class="text-slate-500 mt-1 font-medium">Analisis profitabilitas murni dari transaksi penjualan bulanan.</p>
+            <p class="text-slate-500 mt-1 font-medium">Analisis profitabilitas murni dari transaksi penjualan bulanan (Pendapatan vs HPP).</p>
         </div>
         <div>
             <a href="{{ route('superadmin.reports.profit', ['export' => 'pdf']) }}" target="_blank" class="inline-flex items-center gap-2 bg-brand-blue hover:bg-slate-800 text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-sm text-sm">
@@ -12,11 +12,48 @@
         </div>
     </div>
 
+    @php
+        $totalRev = collect($tableData)->sum('revenue');
+        $totalCogs = collect($tableData)->sum('cogs');
+        $totalProfit = collect($tableData)->sum('profit');
+        $avgMargin = $totalRev > 0 ? ($totalProfit / $totalRev) * 100 : 0;
+    @endphp
+
+    <!-- Metric Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pendapatan (6 Bln)</p>
+            <h4 class="text-2xl font-black text-slate-900">Rp {{ number_format($totalRev, 0, ',', '.') }}</h4>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total HPP (Modal)</p>
+            <h4 class="text-2xl font-black text-slate-700">Rp {{ number_format($totalCogs, 0, ',', '.') }}</h4>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Laba Bersih</p>
+            <h4 class="text-2xl font-black {{ $totalProfit >= 0 ? 'text-emerald-600' : 'text-rose-600' }}">
+                {{ $totalProfit >= 0 ? '+' : '' }}Rp {{ number_format($totalProfit, 0, ',', '.') }}
+            </h4>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Rata-rata Margin Laba</p>
+            <h4 class="text-2xl font-black {{ $avgMargin >= 0 ? 'text-brand-blue' : 'text-rose-600' }}">
+                {{ $avgMargin >= 0 ? '+' : '' }}{{ number_format($avgMargin, 1) }}%
+            </h4>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
     <div class="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 shadow-sm mb-6">
+        <h3 class="text-lg font-bold text-slate-900 mb-4">Grafik Tren Pendapatan & Laba Bersih</h3>
         <canvas id="profitChart" height="100"></canvas>
     </div>
 
+    <!-- Table Section -->
     <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm">
+        <div class="p-6 border-b border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900">Rincian Performa Laba/Rugi Bulanan</h3>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
                 <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-100 font-bold">
@@ -24,22 +61,29 @@
                         <th class="px-6 py-4">Bulan</th>
                         <th class="px-6 py-4 text-right">Total Pendapatan (Rp)</th>
                         <th class="px-6 py-4 text-right">Total HPP (Rp)</th>
-                        <th class="px-6 py-4 text-right">Laba Bersih (Rp)</th>
+                        <th class="px-6 py-4 text-right">Laba/Rugi Bersih (Rp)</th>
                         <th class="px-6 py-4 text-right">Margin Laba (%)</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse($tableData as $row)
+                    @php
+                        $rowMargin = $row['revenue'] > 0 ? ($row['profit'] / $row['revenue']) * 100 : 0;
+                    @endphp
                     <tr class="hover:bg-slate-50/50 transition-colors">
                         <td class="px-6 py-4 font-bold text-slate-900">{{ $row['month_name'] }}</td>
-                        <td class="px-6 py-4 font-medium text-slate-700 text-right">{{ number_format($row['revenue'], 0, ',', '.') }}</td>
-                        <td class="px-6 py-4 font-medium text-slate-700 text-right">{{ number_format($row['cogs'], 0, ',', '.') }}</td>
-                        <td class="px-6 py-4 font-bold text-emerald-600 text-right">{{ number_format($row['profit'], 0, ',', '.') }}</td>
-                        <td class="px-6 py-4 font-bold text-slate-700 text-right">
+                        <td class="px-6 py-4 font-medium text-slate-700 text-right">Rp {{ number_format($row['revenue'], 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 font-medium text-slate-700 text-right">Rp {{ number_format($row['cogs'], 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 font-bold text-right {{ $row['profit'] >= 0 ? 'text-emerald-600' : 'text-rose-600' }}">
+                            {{ $row['profit'] >= 0 ? '+' : '' }}Rp {{ number_format($row['profit'], 0, ',', '.') }}
+                        </td>
+                        <td class="px-6 py-4 font-bold text-right">
                             @if($row['revenue'] > 0)
-                                {{ number_format(($row['profit'] / $row['revenue']) * 100, 1) }}%
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold {{ $rowMargin >= 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-rose-50 text-rose-700 border border-rose-100' }}">
+                                    {{ $rowMargin >= 0 ? '+' : '' }}{{ number_format($rowMargin, 1) }}%
+                                </span>
                             @else
-                                0%
+                                <span class="text-slate-400 font-medium">0.0%</span>
                             @endif
                         </td>
                     </tr>
