@@ -169,10 +169,7 @@ class MedicineController extends Controller
         try {
             $medicine->delete();
             return redirect()->back()->with('success', 'Data obat berhasil dihapus/dimusnahkan!');
-        } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() === '23000') {
-                return redirect()->back()->with('error', 'Gagal menghapus: Obat ini masih terikat dengan data riwayat transaksi (Pembelian/Penjualan).');
-            }
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus data obat.');
         }
     }

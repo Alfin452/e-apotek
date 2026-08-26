@@ -162,7 +162,7 @@ class PurchaseController extends Controller
             DB::beginTransaction();
             
             foreach ($purchase->details as $detail) {
-                $medicine = Medicine::find($detail->medicine_id);
+                $medicine = Medicine::withTrashed()->find($detail->medicine_id);
                 if ($medicine) {
                     $medicine->stock -= $detail->quantity;
                     $medicine->save();

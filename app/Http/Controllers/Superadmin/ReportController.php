@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\SaleDetail;
+use App\Models\Medicine;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -228,7 +229,7 @@ class ReportController extends Controller
         $sixtyDays = Carbon::now()->addDays(60);
 
         // Group into Critical (< 30), Warning (< 60), Safe (Others)
-        $medicines = DB::table('medicines')->get();
+        $medicines = Medicine::get();
 
         $critical = [];
         $warning = [];
@@ -269,13 +270,9 @@ class ReportController extends Controller
 
     public function stockStatus(Request $request) 
     {
-        $criticalStocks = DB::table('medicines')
-            ->whereColumn('stock', '<=', 'min_stock')
-            ->get();
+        $criticalStocks = Medicine::whereColumn('stock', '<=', 'min_stock')->get();
             
-        $safeStocks = DB::table('medicines')
-            ->whereColumn('stock', '>', 'min_stock')
-            ->count();
+        $safeStocks = Medicine::whereColumn('stock', '>', 'min_stock')->count();
             
         $labels = ['Stok Kritis', 'Stok Aman'];
         $stockData = [$criticalStocks->count(), $safeStocks];
