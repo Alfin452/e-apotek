@@ -51,8 +51,9 @@
 
     <!-- Table Section -->
     <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm">
-        <div class="p-6 border-b border-slate-100">
+        <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <h3 class="text-lg font-bold text-slate-900">Rincian Performa Laba/Rugi Bulanan</h3>
+            <span class="text-xs text-slate-400 font-medium">Rumus: Margin = (Laba ÷ Pendapatan) × 100%</span>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
@@ -79,11 +80,23 @@
                         </td>
                         <td class="px-6 py-4 font-bold text-right">
                             @if($row['revenue'] > 0)
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold {{ $rowMargin >= 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-rose-50 text-rose-700 border border-rose-100' }}">
-                                    {{ $rowMargin >= 0 ? '+' : '' }}{{ number_format($rowMargin, 1) }}%
-                                </span>
+                                @if($rowMargin > 0)
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                                        +{{ number_format($rowMargin, 1) }}%
+                                    </span>
+                                @elseif($rowMargin < 0)
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-50 text-rose-700 border border-rose-100" title="Defisit / Rugi">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                        {{ number_format($rowMargin, 1) }}% <span class="text-[10px] uppercase tracking-wider font-extrabold text-rose-600">(Rugi)</span>
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600">
+                                        0.0% (Impas)
+                                    </span>
+                                @endif
                             @else
-                                <span class="text-slate-400 font-medium">0.0%</span>
+                                <span class="text-slate-400 font-medium text-xs">0.0%</span>
                             @endif
                         </td>
                     </tr>
@@ -94,6 +107,10 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span><strong>Catatan:</strong> Margin Laba Bersih dihitung dari persentase keuntungan murni terhadap total pendapatan penjualan. Margin bernilai positif jika pendapatan melebihi HPP.</span>
         </div>
     </div>
 

@@ -95,7 +95,11 @@
                     {{ $row['profit'] >= 0 ? '+' : '' }}Rp {{ number_format($row['profit'], 0, ',', '.') }}
                 </td>
                 <td class="text-right {{ $rowMargin >= 0 ? 'profit' : 'loss' }}">
-                    {{ $row['revenue'] > 0 ? ($rowMargin >= 0 ? '+' : '') . number_format($rowMargin, 1) . '%' : '0.0%' }}
+                    @if($row['revenue'] > 0)
+                        {{ $rowMargin > 0 ? '+' : '' }}{{ number_format($rowMargin, 1) }}%{{ $rowMargin < 0 ? ' (Rugi)' : '' }}
+                    @else
+                        0.0%
+                    @endif
                 </td>
             </tr>
             @empty
@@ -105,6 +109,10 @@
             @endforelse
         </tbody>
     </table>
+
+    <div style="font-size: 8px; color: #64748b; margin-top: -5px; margin-bottom: 15px;">
+        * Margin Laba Bersih = (Laba Bersih ÷ Total Pendapatan) × 100%. Margin positif menunjukkan rasio keuntungan murni dari total penjualan.
+    </div>
 
     <div class="footer">Dicetak otomatis oleh Sistem Informasi E-Apotek</div>
 </body>
